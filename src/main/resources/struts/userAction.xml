@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+        "http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+    <package name="user" namespace="/user" extends="struts-default">
+        <action name="login" class="com.ordersystem.action.UserAction" method="login">
+            <result name="login_success">/index.jsp</result>
+            <result name="login_failure">/login.jsp</result>
+        </action>
+
+        <action name="toRegister" class="com.ordersystem.action.UserAction" method="toRegister">
+            <result name="toRegister" type="redirect">/sign-up.html</result>
+        </action>
+
+        <action name="signup" class="com.ordersystem.action.UserAction" method="signup">
+            <result name="signup_success">/index.jsp</result>
+            <result name="signup_failure">/sign-up.html</result>
+        </action>
+    </package>
+</struts>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ordersystem.mapper.UserMapper">
+    <select id="showUserAll" resultType="com.ordersystem.entity.User">
+        select uid,username,password from user_
+    </select>
+    <select id="login" resultMap="resultUser" parameterType="com.ordersystem.entity.User" >
+        select uid,username,email,lid,description from user_ join limit_ on user_.lid=limit_.id where user_.username=#{username} and user_.password=#{password}
+    </select>
+    <resultMap id="resultUser" type="com.ordersystem.entity.User">
+        <id property="uid" column="uid" />
+        <result property="password" column="password" />
+        <result property="username" column="username" />
+        <result property="email" column="email" />
+        <association property="limit" javaType="com.ordersystem.entity.Limit">
+            <id property="lid" column="id" />
+            <result property="description" column="description" />
+        </association>
+    </resultMap>
+    <!--todo 注册完自动登陆-->
+    <insert id="signup" parameterType="com.ordersystem.entity.User" useGeneratedKeys="true" keyProperty="uid">
+        insert into user_ (username,password,email,lid) values(#{username},#{password},#{email}, 2)
+    </insert>
+</mapper>

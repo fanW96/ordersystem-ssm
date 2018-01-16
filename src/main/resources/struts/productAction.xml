@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+        "http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+    <package name="product" namespace="/product" extends="struts-default">
+        <action name="showAllProduct" class="com.ordersystem.action.ProductAction" method="showAllProduct">
+            <result name="showAllProduct">/productList.jsp</result>
+        </action>
+        <action name="productAction" class="com.ordersystem.action.ProductAction">
+            <param name="savePath">/upload</param>
+            <result name="success">/index.jsp</result>
+            <result name="prodictList">/productList.jsp</result>
+            <interceptor-ref name="fileUpload">
+                <param name="allowedTypes">image/jpeg,image/gif</param>
+                <param name="maximumSize">100000000000000</param>
+            </interceptor-ref>
+            <interceptor-ref name="defaultStack" />
+        </action>
+    </package>
+</struts>

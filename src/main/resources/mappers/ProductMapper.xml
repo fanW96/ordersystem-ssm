@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ordersystem.mapper.ProductMapper">
+    <insert id="addProduct" parameterType="com.ordersystem.entity.Product">
+        insert into product_ (cid,pname,state,price,picture,mount) values (#{cid},#{pname},#{state},#{price},#{picture},#{mount})
+    </insert>
+
+    <select id="showAllProduct" resultMap="resultProduct" parameterType="com.ordersystem.entity.Product">
+        select pid,pname,state,picture,product_.cid,description from product_ join category_ on product_.cid=category_.cid order by pid
+    </select>
+
+    <resultMap type="com.ordersystem.entity.Product" id="resultProduct">
+        <id property="pid" column="pid" />
+        <result property="pname" column="pname"/>
+        <result property="mount" column="mount"/>
+        <result property="price" column="price"/>
+        <result property="state" column="state"/>
+        <result property="picture" column="picture"/>
+        <association property="category" javaType="Category">
+            <id property="cid" column="cid"/>
+            <result property="description" column="description"/>
+        </association>
+    </resultMap>
+</mapper>
