@@ -1,6 +1,5 @@
 package com.ordersystem.service.impl;
 
-import com.github.pagehelper.PageHelper;
 import com.ordersystem.entity.Product;
 import com.ordersystem.mapper.ProductMapper;
 import com.ordersystem.service.ProductService;
@@ -15,11 +14,37 @@ public class ProductServiceImpl implements ProductService{
         return productMapper.addProduct(product);
     }
 
+
     @Override
     public List<Product> showAllProduct() {
-        PageHelper.startPage(2,10);
         return productMapper.showAllProduct();
     }
+
+    @Override
+    public int deleteProduct(int pid) {
+        return productMapper.deleteProduct(pid);
+    }
+
+    @Override
+    public Product detailProduct(int pid) {
+        return productMapper.detailProduct(pid);
+    }
+
+    @Override
+    public List<Product> searchProduct(Product product) {
+        return productMapper.searchProduct(product);
+    }
+
+    @Override
+    public int updateProduct(int pid) {
+        return productMapper.updateProduct(pid);
+    }
+
+    @Override
+    public Product toUpdate(int pid) {
+        return productMapper.toUpdate(pid);
+    }
+
 
     public ProductMapper getProductMapper() {
         return productMapper;

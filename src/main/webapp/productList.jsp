@@ -104,8 +104,9 @@
         <div class="sideMenu">
             <h3 class="am-icon-flag"><em></em> <a href="#">商品管理</a></h3>
             <ul>
-                <li><a href="ProductServlet?methods=searchProductSelf">商品列表</a></li>
-                <li class="func" ><a href="ProductServlet?methods=increasedPage">添加新商品</a></li><li>商品分类</li>
+                <li><a href="/product/showAllProduct">商品列表</a></li>
+                <li class="func" ><a href="/category/getAllCategory">添加新商品</a></li>
+                <li>商品分类</li>
                 <li>用户评论</li>
                 <li>商品回收站</li>
                 <li>库存管理 </li>
@@ -179,8 +180,6 @@
                 <li><button type="button" class="am-btn am-btn-default am-radius am-btn-xs">帮助中心<a href="javascript: void(0)" class="am-close am-close-spin" data-am-modal-close="">×</a></button></li>
                 <li><button type="button" class="am-btn am-btn-default am-radius am-btn-xs">奖金管理<a href="javascript: void(0)" class="am-close am-close-spin" data-am-modal-close="">×</a></button></li>
                 <li><button type="button" class="am-btn am-btn-default am-radius am-btn-xs">产品管理<a href="javascript: void(0)" class="am-close am-close-spin" data-am-modal-close="">×</a></button></li>
-
-
             </ul>
 
 
@@ -201,34 +200,24 @@
                 <dl>
                     <button type="button" class="am-btn am-btn-danger am-round am-btn-xs am-icon-plus"> 添加产品</button>
                 </dl>
-
-
             </div>
 
             <div class="am-btn-toolbars am-btn-toolbar am-kg am-cf">
-                <form  name="seoFRM" action="ProductServlet" method="post">
+                <form  name="searchProduct" action="product/searchProduct" method="post">
                     <ul>
                         <li style="margin-left: -10px;">
                             <div class="am-btn-group am-btn-group-xs">
                                 <input name="methods" type="hidden" value="seo_pro" />
-                                <select name="pro_state" data-am-selected="{btnWidth: 90, btnSize: 'sm', btnStyle: 'default'}">
-                                    <c:if test="${updown==0}">
-                                        <option value="1">上架</option>
-                                        <option value="0" selected>下架</option>
-                                    </c:if>
-                                    <c:if test="${updown==1}">
-                                        <option value="1" selected>上架</option>
-                                        <option value="0" >下架</option>
-                                    </c:if>
-                                    <c:if test="${updown!=0&&updown!=1}">
-                                        <option value="1" selected>上架</option>
-                                        <option value="0" >下架</option>
-                                    </c:if>
+                                <select name="product.state" data-am-selected="{btnWidth: 90, btnSize: 'sm', btnStyle: 'default'}">
+                                    <option value="1" <s:if test="product.state==1">selected</s:if>>上架</option>
+                                    <option value="0" <s:if test="product.state==0">selected</s:if>>下架</option>
+                                    <option value="2" <s:if test="product.state!=1&&product.state!=0">selected</s:if>>全部</option>
                                 </select>
                             </div>
                         </li>
-                        <li><input name="pro_name" type="text" class="am-form-field am-input-sm am-input-xm" placeholder="关键词搜索" /></li>
-                        <li><button type="button" onclick="subSeo()" class="am-btn am-radius am-btn-xs am-btn-success" style="margin-top: -1px;">搜索</button></li>
+                        <li><input name="product.pname" type="text" class="am-form-field am-input-sm am-input-xm"
+                                placeholder="关键词搜索" <s:if test="product.pname!=null"> value="<s:property value="product.pname"/>"</s:if>/></li>
+                        <li><input type="submit" class="am-btn am-radius am-btn-xs am-btn-success" style="margin-top: -1px;" value="搜索"/></li>
                     </ul>
                 </form>
             </div>
@@ -250,14 +239,17 @@
                         <th class="table-author am-hide-sm-only">上架<i class="am-icon-check am-text-warning"></i>/下架  <i class="am-icon-close am-text-primary"></i></th>
                         <th class="table-date am-hide-sm-only">照片</th>
                         <th class="table-id">单价</th>
+                        <th class="table-id">库存</th>
                         <th width="163px" class="table-set">操作</th>
                     </tr>
                     </thead>
                     <tbody>
                     <s:iterator value="productList" var ="p">
 
-                        <tr class="am-success">
-                            <td class="table-check"><input type="checkbox" /></td>
+                        <tr class="am-success"  id='product<s:property value="#p.pid"/>'>
+                            <td class="table-check">
+                                <input type="checkbox"/>
+                            </td>
                             <td class="table-id"><s:property value="#p.pid"/> </td>
                             <td class="table-title"><s:property value="#p.pname"/></td>
                             <td class="table-type"><s:property value="#p.category.description"/></td>
@@ -268,25 +260,27 @@
                                 <s:elseif test="#p.state==0">
                                     <i class="am-icon-close am-text-primary"></i>
                                 </s:elseif>
-
-
-
                             </td>
                             <td class="table-date am-hide-sm-only">
                                 <img src='upload/<s:property value="#p.picture"/>' width="100px" height="40px"
-                                     <%--onerror="this.src='assets/img/logo.png'"--%>
-                                />
+                                     onerror="this.src='assets/img/logo.png'"/>
                             </td>
 
                             </td>
                             <td class="table-id"><s:property value="#p.price"/></td>
+                            <td class="table-id"><s:property value="#p.mount"/></td>
                             <td><div class="am-btn-toolbar">
                                 <div class="am-btn-group am-btn-group-xs">
-                                    <button class="am-btn am-btn-default am-btn-xs am-text-success am-round"><span class="am-icon-search"></span> </button>
-                                    <a href="#" class="am-btn am-btn-default am-btn-xs am-text-secondary am-round"><span class="am-icon-pencil-square-o"></span></a>
+                                    <%--<button class="am-btn am-btn-default am-btn-xs am-text-success am-round"><span class="am-icon-search"></span> </button>--%>
+                                    <a href="product/detailProduct?product.pid=<s:property value="#p.pid"/>" class="am-btn am-btn-default am-btn-xs am-text-success am-round">
+                                        <span class="am-icon-search"></span>
+                                    </a>
+                                    <a href="product/toUpdate?product.pid=<s:property value="#p.pid"/>" class="am-btn am-btn-default am-btn-xs am-text-secondary am-round"><span class="am-icon-pencil-square-o"></span></a>
                                     <%--javascript:editProduct(${p.product_id},${p.state})--%>
                                     <button class="am-btn am-btn-default am-btn-xs am-text-warning  am-round"><span class="am-icon-copy"></span></button>
-                                    <button class="am-btn am-btn-default am-btn-xs am-text-danger am-round"><span class="am-icon-trash-o"></span></button>
+                                    <a href="product/deleteProduct?product.pid=<s:property value="#p.pid"/>" class="am-btn am-btn-default am-btn-xs am-text-danger am-round">
+                                        <span class="am-icon-trash-o"></span>
+                                    </a>
                                 </div>
                             </div></td>
                         </tr>
@@ -305,18 +299,48 @@
                     <button type="button" class="am-btn am-btn-default"><span class="am-icon-trash-o"></span> 删除</button>
                 </div>
 
+                <%--<ul class="am-pagination am-fr">--%>
+                    <%--<li class="am-disabled"><a href="#">«</a></li>--%>
+                    <%--<li class="am-active"><a href="#">1</a></li>--%>
+                    <%--<li><a href="#">2</a></li>--%>
+                    <%--<li><a href="#">3</a></li>--%>
+                    <%--<li><a href="#">4</a></li>--%>
+                    <%--<li><a href="#">5</a></li>--%>
+                    <%--<li><a href="#">»</a></li>--%>
+                <%--</ul>--%>
+                分页
                 <ul class="am-pagination am-fr">
-                    <li class="am-disabled"><a href="#">«</a></li>
-                    <li class="am-active"><a href="#">1</a></li>
-                    <li><a href="#">2</a></li>
-                    <li><a href="#">3</a></li>
-                    <li><a href="#">4</a></li>
-                    <li><a href="#">5</a></li>
-                    <li><a href="#">»</a></li>
+                    <li <s:if test="#page.ishasPre()==false">class="disabled"</s:if>>
+                    <a  href="?start=0<s:property value="#page.param" />" aria-label="Previous" >
+                            <span aria-hidden="true">«</span>
+                        </a>
+                    </li>
+
+                    <li <s:if test="#page.ishasPre()==false">class="disabled"</s:if>>
+                    <a  href="?start=<s:property value="#page.start" />-<s:property value="#page.count" /><s:property value="#page.param" />" aria-label="Previous" >
+                            <span aria-hidden="true">‹</span>
+                        </a>
+                    </li>
+
+                    <%--<s:iterator begin="1" end="(#page.totalPage)-1" status="status">--%>
+                        <%--<li <s:if test="(#status.index)*(#page.count)==#page.start">class=""</s:if>>--%>
+                            <%--<a href="?start=<s:property value="(#status.index)*(#page.count)" /><s:property value="#page.param" />"--%>
+                               <%--<s:if test="(#status.index)*(#page.count)==#page.start">class="current"</s:if>><s:property value="#status.count"/> </a>--%>
+                        <%--</li>--%>
+                    <%--</s:iterator>--%>
+
+                    <li <s:if test="#page.ishasNext()==false">class="disabled"</s:if>>
+                        <a  href="?start=<s:property value="#page.start" />+<s:property value="#page.count" /><s:property value="#page.param" />" aria-label="Previous" >
+                            <span aria-hidden="true">›</span>
+                        </a>
+                    </li>
+
+                    <li <s:if test="#page.ishasNext()==false">class="disabled"</s:if>>
+                        <a  href="?start=<s:property value="#page.last" /><s:property value="#page.param" />" aria-label="Previous" >
+                            <span aria-hidden="true">»</span>
+                        </a>
+                    </li>
                 </ul>
-
-
-
 
                 <hr />
                 <p>注：.....</p>
@@ -333,18 +357,12 @@
                     <a href="" title="返回头部" class="am-icon-btn am-icon-arrow-up"></a>
                 </dl>
             </div>
-
-
-
-
         </div>
 
     </div>
 
-
-
-
 </div>
+
 
 <!--[if lt IE 9]>
 <script src="http://libs.baidu.com/jquery/1.11.1/jquery.min.js"></script>

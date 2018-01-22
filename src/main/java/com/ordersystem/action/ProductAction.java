@@ -1,23 +1,61 @@
 package com.ordersystem.action;
 
+
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
+import com.ordersystem.entity.Category;
+import com.ordersystem.entity.Page;
 import com.ordersystem.entity.Product;
+import com.ordersystem.service.CategoryService;
 import com.ordersystem.service.ProductService;
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.interceptor.SessionAware;
 
 import java.io.*;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class ProductAction extends ActionSupport implements SessionAware {
-    private  ProductService productService;
-    private  Product product;
+    private ProductService productService;
+    private CategoryService categoryService;
+    private List<Category> categoryList;
+    private Product product;
     private File picture;
     private String pictureContentType;
     private String pictureFileName;
     private String savePath;
-    List<Product> productList;
+    private List<Product> productList;
+
+    public CategoryService getCategoryService() {
+        return categoryService;
+    }
+
+    public void setCategoryService(CategoryService categoryService) {
+        this.categoryService = categoryService;
+    }
+
+    public List<Category> getCategoryList() {
+        return categoryList;
+    }
+
+    public void setCategoryList(List<Category> categoryList) {
+        this.categoryList = categoryList;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    private String state;
+
+    public Map<String,Object> session;
 
     public File getPicture() {
         return picture;
@@ -80,14 +118,55 @@ public class ProductAction extends ActionSupport implements SessionAware {
     }
 
     public String showAllProduct() {
+        Page page = new Page();
+        //PageHelper.offsetPage(page.getStart(),page.getCount());
         productList = productService.showAllProduct();
-        for (Product p:productList
-             ) {
-            System.out.println(p.toString());
-        }
+//        int total = (int) new PageInfo<>(productList).getTotal();
+//        page.setTotal(total);
+//        session.put("productList",productList);
+//        session.put("page",page);
+
         return "showAllProduct";
     }
 
+    public String deleteProduct() {
+        System.out.println(product.getPid());
+        if(productService.deleteProduct(product.getPid()) == 1){
+            productList = productService.showAllProduct();
+            return "deleteProduct";
+        }
+        return "failure";
+    }
+
+    public String detailProduct() {
+        product = productService.detailProduct(product.getPid());
+        if(product != null) {
+            return "detailProduct";
+        }
+        return "fail";
+    }
+
+    public String searchProduct() {
+        productList = productService.searchProduct(product);
+        System.out.println("name="+product.getPname());
+        return "searchProduct";
+    }
+
+    public String updateProduct() {
+        if(productService.updateProduct(product.getPid())==1) {
+            return "updateProduct";
+        }
+        return "failure";
+    }
+
+    public String toUpdate() {
+        product = productService.toUpdate(product.getPid());
+        categoryList = categoryService.getAllCategory();
+        if(product!=null&&categoryList!=null) {
+            return "toUpdate";
+        }
+        return "failure";
+    }
 
     public String getSavePath() {
         return ServletActionContext.getServletContext().getRealPath(savePath);
@@ -116,8 +195,6 @@ public class ProductAction extends ActionSupport implements SessionAware {
     public Map<String, Object> getSession() {
         return session;
     }
-
-    public Map<String,Object> session;
 
     public String toAddProduct() {
         return "toAddProduct";

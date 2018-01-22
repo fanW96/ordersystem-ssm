@@ -8,8 +8,36 @@
     </insert>
 
     <select id="showAllProduct" resultMap="resultProduct" parameterType="com.ordersystem.entity.Product">
-        select pid,pname,state,picture,product_.cid,description from product_ join category_ on product_.cid=category_.cid order by pid
+        select pid,pname,state,picture,product_.cid,description,price,mount from product_ join category_ on product_.cid=category_.cid order by pid
     </select>
+
+    <select id="toUpdate" resultMap="resultProduct" parameterType="com.ordersystem.entity.Product">
+        select pid,pname,state,picture,product_.cid,description,price,mount from product_ join category_ on product_.cid=category_.cid where pid=#{pid}
+    </select>
+
+    <update id="updateProduct" parameterType="com.ordersystem.entity.Product">
+        update product_ set pname=#{pname},price=#{price},mount=#{mount}
+        <if test="picture!=null">
+            ,picture=#{picture}
+        </if>
+        where pid=#{pid}
+    </update>
+
+    <select id="searchProduct" resultMap="resultProduct" parameterType="com.ordersystem.entity.Product" >
+        select pid,pname,state,picture,product_.cid,description,price,mount from product_ join category_ on product_.cid=category_.cid where pname like Concat('%',#{pname},'%')
+        <!--<if test="state != null and state != '' or state==0">and state=0</if>-->
+        <if test="state==0">and state=0</if>
+        <if test="state==1">and state=1</if>
+        order by pid
+    </select>
+
+    <select id="detailProduct"  resultMap="resultProduct" parameterType="int">
+                select pid,pname,state,picture,product_.cid,description,price,mount from product_ join category_ on product_.cid=category_.cid where pid=#{pid}
+    </select>
+
+    <delete id="deleteProduct" parameterType="int">
+        delete from product_ where pid=#{pid}
+    </delete>
 
     <resultMap type="com.ordersystem.entity.Product" id="resultProduct">
         <id property="pid" column="pid" />

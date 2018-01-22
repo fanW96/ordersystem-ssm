@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="s" uri="/struts-tags" %>
 <%
 	String path = request.getContextPath();
 	String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
@@ -53,7 +54,7 @@
 													color="#000000"><img
 														style="BORDER-LEFT-COLOR: #000000; BORDER-BOTTOM-COLOR: #000000; BORDER-TOP-COLOR: #000000; BORDER-RIGHT-COLOR: #000000"
 														height="83" hspace="0"
-														src="upload/${pro_info.picture}" width="86"
+														src="upload/<s:property value="product.picture"/>" width="86"
 														align="default" border="0" /></font></td>
 												<td height="100" valign="top">
 													<table height="100%" cellspacing="3" cellpadding="0"
@@ -67,25 +68,26 @@
 																		<tbody>
 																			<tr valign="top" bgcolor="#ffffff">
 																				<td align="middle" width="90" bgcolor="#f0f0f0">产品编号</td>
-																				<td style="PADDING-LEFT: 10px">${requestScope.pro_info.product_id}</td>
+																				<td style="PADDING-LEFT: 10px"><s:property value="product.pid"/> </td>
 																			</tr>
 																			<tr valign="top" bgcolor="#ffffff">
 																				<td align="middle" width="90" bgcolor="#f0f0f0">产品名称</td>
-																				<td style="PADDING-LEFT: 10px">${requestScope.pro_info.pro_name}</td>
+																				<td style="PADDING-LEFT: 10px"><s:property value="product.pname"/></td>
 																			</tr>
 																			 
 																			<tr valign="top" bgcolor="#ffffff">
 																				<td align="middle" width="90" bgcolor="#f0f0f0">产品类型</td>
-																				<td style="PADDING-LEFT: 10px">${requestScope.pro_info.category.cate_name}</td>
+																				<td style="PADDING-LEFT: 10px"><s:property value="product.category.description"/></td>
 																			</tr>
 																			<tr valign="top" bgcolor="#ffffff">
 																				<td align="middle" width="90" bgcolor="#f0f0f0">产品单价</td>
-																				<td style="PADDING-LEFT: 10px">${requestScope.pro_info.price}</td>
+																				<td style="PADDING-LEFT: 10px"><s:property value="product.price"/></td>
 																			</tr>
 																			<tr valign="top" bgcolor="#ffffff">
 																				<td align="middle" width="90" bgcolor="#f0f0f0">产品库存</td>
-																				<td style="PADDING-LEFT: 10px">${requestScope.pro_info.pro_mount}</td>
+																				<td style="PADDING-LEFT: 10px"><s:property value="product.mount"/></td>
 																			</tr>
+
 																		</tbody>
 																	</table>
 																	<img src="image/cart.jpg" onclick="javascript:location.href='OrderServlet?methods=increasedOrders&pro_id=${requestScope.pro_info.product_id}'" width="100px" height=40px/>

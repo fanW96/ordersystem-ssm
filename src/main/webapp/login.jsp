@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="s"  uri="/struts-tags"%>
 <%
 	String path = request.getContextPath();
 	String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
@@ -27,7 +28,9 @@
 <link rel="stylesheet" href="assets/css/amazeui.datatables.min.css" />
 <link rel="stylesheet" href="assets/css/app.css">
 <script src="assets/js/jquery.min.js"></script>
-<script type="text/javascript" src="js/login.js"></script>
+<%--<script type="text/javascript" src="js/login.js"></script>--%>
+	<%--测试--%>
+<%--<script type="text/javascript" src="js/check.js"/>--%>
 </head>
 
 <body data-type="login">
@@ -50,7 +53,8 @@ if(cook!=null)
    }
  }
 %>
-	<script src="assets/js/theme.js"></script>
+	<script src="assets/js/theme.js">
+	</script>
 	<div class="am-g tpl-g">
 		<!-- 风格切换 -->
 		<div class="tpl-skiner">
@@ -85,7 +89,7 @@ if(cook!=null)
 
 
 				<form name="login" class="am-form tpl-form-line-form"
-					  action="user/login" method="post">
+					  action="user/login" method="post" onsubmit="return checkLogin()">
 					<div class="am-form-group">
 					<%--<input   type="hidden"  value="true"  id="resubmit" name="resubmit"/>   --%>
 						<%--<input type="hidden" value="login" name="methods" />--%>
@@ -100,8 +104,7 @@ if(cook!=null)
 						<span id="pwdSpan"></span>
 					</div>
 					<div class="am-form-group tpl-login-remember-me">
-						<input id="remember-me" name="remember-me" type="checkbox"> <label
-							for="remember-me"> 记住密码 </label>
+						<input id="remember-me" name="remember-me" type="checkbox"> <label for="remember-me"> 记住密码 </label>
 
 					</div>
 					<div class="am-form-group">
@@ -110,15 +113,14 @@ if(cook!=null)
 					</div>
 				</form>
 				<div class="am-form-group">
-					<button type="submit" formaction="user/toRegister"
-						   class="am-btn am-btn-primary  am-btn-block tpl-btn-bg-color-success  tpl-login-btn" placeholder="提交" />
+					<a  href="user/toRegister"
+						class="am-btn am-btn-primary  am-btn-block tpl-btn-bg-color-success  tpl-login-btn" placeholder="注册" >注册</a>
 				</div>
 			</div>
 		</div>
 	</div>
 	<script src="assets/js/amazeui.min.js"></script>
 	<script src="assets/js/app.js"></script>
-
 </body>
 
 </html>

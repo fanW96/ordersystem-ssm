@@ -4,8 +4,22 @@
         "http://struts.apache.org/dtds/struts-2.3.dtd">
 <struts>
     <package name="product" namespace="/product" extends="struts-default">
-        <action name="showAllProduct" class="com.ordersystem.action.ProductAction" method="showAllProduct">
+        <action name="showAllProduct" class="com.ordersystem.action.ProductAction" method="showAllProduct" >
             <result name="showAllProduct">/productList.jsp</result>
+        </action>
+
+        <action name="toUpdate" class="com.ordersystem.action.ProductAction" method="toUpdate">
+            <result name="toUpdate">/updateProduct.jsp</result>
+        </action>
+
+        <action name="deleteProduct" class="com.ordersystem.action.ProductAction" method="deleteProduct">
+            <result name="deleteProduct">/productList.jsp</result>
+        </action>
+        <action name="detailProduct" class="com.ordersystem.action.ProductAction" method="detailProduct">
+            <result name="detailProduct">/detailProduct.jsp</result>
+        </action>
+        <action name="searchProduct" class="com.ordersystem.action.ProductAction" method="searchProduct" >
+            <result name="searchProduct">/productList.jsp</result>
         </action>
         <action name="productAction" class="com.ordersystem.action.ProductAction">
             <param name="savePath">/upload</param>

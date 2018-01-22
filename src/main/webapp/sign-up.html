@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="assets/css/amazeui.datatables.min.css" />
     <link rel="stylesheet" href="assets/css/app.css">
     <script src="assets/js/jquery.min.js"></script>
-
+    <script src="js/check.js"/>
 </head>
 
 <body data-type="login">
@@ -43,22 +43,26 @@
               </span>
 
 
-                <form class="am-form tpl-form-line-form" action="user/signup" method="post" name="signup">
+                <form class="am-form tpl-form-line-form" action="user/signup" method="post" name="signup" onsubmit="return checkRegister()">
                     <div class="am-form-group">
                         <input type="text" class="tpl-form-input" name="user.email" id="email" placeholder="邮箱">
-
+                        <p id="mailP" style="display: none">邮箱格式错误</p>
                     </div>
 
                     <div class="am-form-group">
                         <input type="text" class="tpl-form-input" name="user.username" id="username" placeholder="用户名">
+                        <p id="nameP" style="display: none">用户名格式错误：4到16位（字母，数字，下划线，减号）</p>
                     </div>
 
                     <div class="am-form-group">
                         <input type="password" class="tpl-form-input" name="user.password" id="pwd" placeholder="请输入密码">
+
                     </div>
 
                     <div class="am-form-group">
                         <input type="password" class="tpl-form-input" id="repwd" placeholder="再次输入密码">
+                        <p id="pwdP" style="display: none">密码格式错误：最少6位，包括至少1个大写字母，1个小写字母，1个数字，1个特殊字符</p>
+                        <p id="pwdCheckP" style="display: none">两次输入不同</p>
                     </div>
 
                     <div class="am-form-group tpl-login-remember-me">

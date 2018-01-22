@@ -27,7 +27,6 @@
     <link rel="stylesheet" href="assets/css/admin.css">
     <script src="assets/js/jquery.min.js"></script>
     <script src="assets/js/app.js"></script>
-    <script src="js/check.js"></script>
 </head>
 
 
@@ -201,7 +200,7 @@
         <div class="admin-biaogelist">
 
             <div class="listbiaoti am-cf">
-                <ul class="am-icon-flag on">新品添加</ul>
+                <ul class="am-icon-flag on">信息修改</ul>
 
                 <dl class="am-icon-home" style="float: right;"> 当前位置： 首页 > <a href="#">商品列表</a></dl>
 
@@ -216,33 +215,41 @@
                     <font color="blue">新品添加成功</font>
                 </c:if>
                 <form class="am-form" action="product/productAction!upload" method="post" name="addproduct"
-                      enctype="multipart/form-data" onsubmit="return checkIncrease()">
+                      enctype="multipart/form-data">
                     <div class="am-form-group am-cf">
                         <!--     <input type="hidden" class="am-input-sm" name="roleId" value="$ {sessionScope.loginUser.uid}"> -->
-                        <div class="zuo">*商品名称：</div>
+                        <div class="zuo">商品名称：</div>
                         <div class="you">
-                            <input type="text" class="am-input-sm" name="product.pname" placeholder="请输入商品名称" id="product.name">
+                            <input type="text" class="am-input-sm" name="product.pname"
+                                   placeholder="请输入商品名称" value="<s:property value="product.pname"/>" />
+                        </div>
+                    </div>
+                    <div hidden>
+                        <input type="text" value="<s:property value="product.pid"/>">
+                    </div>
+                    <div class="am-form-group am-cf">
+                        <div class="zuo">单价：</div>
+                        <div class="you">
+                            <input type="text" class="am-input-sm" name="product.price"
+                                   placeholder="请输入商品价格" value="<s:property value="product.price"/>"/>
                         </div>
                     </div>
                     <div class="am-form-group am-cf">
-                        <div class="zuo">*单价：</div>
+                        <div class="zuo">数量：</div>
                         <div class="you">
-                            <input type="text" class="am-input-sm" name="product.price" placeholder="请输入商品价格" id="product.price">
+                            <input type="text" class="am-input-sm" name="product.mount"
+                                   placeholder="请输入商品数量" value="<s:property value="product.mount"/>"/>
                         </div>
                     </div>
                     <div class="am-form-group am-cf">
-                        <div class="zuo">*数量：</div>
+                        <div class="zuo">类型：</div>
                         <div class="you">
-                            <input type="text" class="am-input-sm" name="product.mount" placeholder="请输入商品数量" id="product.num">
-                        </div>
-                    </div>
-                    <div class="am-form-group am-cf">
-                        <div class="zuo">*类型：</div>
-                        <div class="you">
-                            <select name="product.cid" id="product.cate">
+                            <select name="product.cid">
                                 <option value="-1">请选择商品类型</option>
                                 <s:iterator value="categoryList" var="c"> <!--id="categoryList" -->
-                                <option value='<s:property value="#c.cid"/>'>
+                                <option value='<s:property value="#c.cid"/>'
+                                        <s:if test="#c.cid==product.category.cid">selected</s:if>
+                                >
                                     <s:property value="#c.description"/>
                                 </option>
                                 </s:iterator>
@@ -253,13 +260,14 @@
                         <div class="zuo">商品图片：</div>
                         <div class="you">
                             <input type="file" class="am-btn am-btn-secondary am-radius" name="picture"
-                                   placeholder="添加商品图片">
+                                   placeholder="添加商品图片" />
+                            <span><s:property value="product.picture"/></span>
                         </div>
                     </div>
 
                     <div class="am-form-group am-cf">
                         <div class="you" style="margin-left: 11%;">
-                            <button type="submit" class="am-btn am-btn-secondary am-radius">发布并继续发布</button>
+                            <button type="submit" class="am-btn am-btn-secondary am-radius">确认修改</button>
                         </div>
                     </div>
                 </form>
