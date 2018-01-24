@@ -14,7 +14,6 @@ public class UserServiceImpl implements UserService{
         return userMapper.login(user);
     }
 
-    @Override
     public int signup(User user) {
         return userMapper.signup(user);
     }

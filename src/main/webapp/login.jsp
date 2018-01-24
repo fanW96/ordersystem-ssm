@@ -29,8 +29,7 @@
 <link rel="stylesheet" href="assets/css/app.css">
 <script src="assets/js/jquery.min.js"></script>
 <%--<script type="text/javascript" src="js/login.js"></script>--%>
-	<%--测试--%>
-<%--<script type="text/javascript" src="js/check.js"/>--%>
+<script type="text/javascript" src="js/check.js"/>
 </head>
 
 <body data-type="login">

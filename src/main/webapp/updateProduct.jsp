@@ -225,7 +225,7 @@
                         </div>
                     </div>
                     <div hidden>
-                        <input type="text" value="<s:property value="product.pid"/>">
+                        <input type="text" value="<s:property value="product.pid"/>" name="product.pid">
                     </div>
                     <div class="am-form-group am-cf">
                         <div class="zuo">单价：</div>

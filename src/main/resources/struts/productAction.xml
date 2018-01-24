@@ -31,5 +31,11 @@
             </interceptor-ref>
             <interceptor-ref name="defaultStack" />
         </action>
+        <action name="putOnShelves" class="com.ordersystem.action.ProductAction" method="putOnShelves">
+            <result name="putOnShelves">/productList.jsp</result>
+        </action>
+        <action name="pullOffShelves" class="com.ordersystem.action.ProductAction" method="pullOffShelves">
+            <result name="pullOffShelves">/productList.jsp</result>
+        </action>
     </package>
 </struts>

@@ -21,14 +21,12 @@ public class UserAction extends ActionSupport implements SessionAware {
     }
 
     public String signup() {
-        //todo username重复判断  flag无用
         int flag = userService.signup(user);
         if(flag!=0) {
             return "signup_success";
         }else {
             System.out.println("else="+flag);
         }
-        //todo 验证是否注册成功
         return "signup";
     }
 

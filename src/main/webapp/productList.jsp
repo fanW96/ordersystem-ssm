@@ -228,11 +228,38 @@
             <c:if test="${state==false}">
                 亲你修改失败了
             </c:if>
-            <form class="am-form am-g">
+
+            <script>
+                $(document).ready(function(){
+                    $("#pull_off_shelves").click(function(){
+
+                        $("#onoff").attr("action","product/pullOffShelves");
+                        $("form").submit();
+                    });
+                    $("#put_on_shelves").click(function(){
+
+                        $("#onoff").attr("action","product/putOnShelves");
+                        $("form").submit();
+                    });
+                });
+            </script>
+            <form class="am-form am-g" id="onoff" METHOD="post">
                 <table width="100%" class="am-table am-table-bordered am-table-radius am-table-striped">
                     <thead>
                     <tr class="am-success">
-                        <th class="table-check"><input type="checkbox" /></th>
+                        <th class="table-check"><input type="checkbox" id="checkAll"/></th>
+                        <script type="text/javascript">
+                            $(function () {
+                                $("#checkAll").bind("click", function () {
+                                    $("[name=selectedId]:checkbox").prop("checked", this.checked);
+                                });
+
+                                $("input[name='selectedId']").click(function() {
+                                    var $subs = $("input[name='selectedId']");
+                                    $("#checkAll").prop("checked",$subs.length == $subs.filter(":checked").length ? true : false);
+                                });
+                            });
+                        </script>
                         <th class="table-id">序号</th>
                         <th class="table-title">商品名称</th>
                         <th class="table-type">商品类别</th>
@@ -240,7 +267,7 @@
                         <th class="table-date am-hide-sm-only">照片</th>
                         <th class="table-id">单价</th>
                         <th class="table-id">库存</th>
-                        <th width="163px" class="table-set">操作</th>
+                        <th class="table-set" width="163px">操作</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -248,7 +275,7 @@
 
                         <tr class="am-success"  id='product<s:property value="#p.pid"/>'>
                             <td class="table-check">
-                                <input type="checkbox"/>
+                                <input type="checkbox" name="selectedId" value="<s:property value="#p.pid"/>" name="checkboxlist"/>
                             </td>
                             <td class="table-id"><s:property value="#p.pid"/> </td>
                             <td class="table-title"><s:property value="#p.pname"/></td>
@@ -290,25 +317,14 @@
 
                 <div class="am-btn-group am-btn-group-xs">
                     <button type="button" class="am-btn am-btn-default"><span class="am-icon-plus"></span> 删除</button>
-                    <button type="button" class="am-btn am-btn-default"><span class="am-icon-save"></span> 上架</button>
-                    <button type="button" class="am-btn am-btn-default"><span class="am-icon-save"></span> 下架</button>
+                    <button type="button" class="am-btn am-btn-default" id="put_on_shelves"><span class="am-icon-save"></span> 上架</button>
+                    <button type="button" class="am-btn am-btn-default" id="pull_off_shelves"><span class="am-icon-save"></span> 下架</button>
                     <button type="button" class="am-btn am-btn-default"><span class="am-icon-save"></span> 移动</button>
                     <button type="button" class="am-btn am-btn-default"><span class="am-icon-plus"></span> 新增</button>
                     <button type="button" class="am-btn am-btn-default"><span class="am-icon-save"></span> 保存</button>
                     <button type="button" class="am-btn am-btn-default"><span class="am-icon-archive"></span> 移动</button>
                     <button type="button" class="am-btn am-btn-default"><span class="am-icon-trash-o"></span> 删除</button>
                 </div>
-
-                <%--<ul class="am-pagination am-fr">--%>
-                    <%--<li class="am-disabled"><a href="#">«</a></li>--%>
-                    <%--<li class="am-active"><a href="#">1</a></li>--%>
-                    <%--<li><a href="#">2</a></li>--%>
-                    <%--<li><a href="#">3</a></li>--%>
-                    <%--<li><a href="#">4</a></li>--%>
-                    <%--<li><a href="#">5</a></li>--%>
-                    <%--<li><a href="#">»</a></li>--%>
-                <%--</ul>--%>
-                分页
                 <ul class="am-pagination am-fr">
                     <li <s:if test="#page.ishasPre()==false">class="disabled"</s:if>>
                     <a  href="?start=0<s:property value="#page.param" />" aria-label="Previous" >

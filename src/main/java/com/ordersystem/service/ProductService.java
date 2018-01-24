@@ -10,6 +10,8 @@ public interface ProductService {
     public int deleteProduct(int pid);
     public Product detailProduct(int pid);
     public List<Product> searchProduct(Product product);
-    public int updateProduct(int pid);
+    public int updateProduct(Product pid);
     public Product toUpdate(int pid);
+    public int putOnShelves(List selectedId);
+    public int pullOffShelves(List selectedId);
 }

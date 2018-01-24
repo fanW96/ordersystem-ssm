@@ -23,6 +23,26 @@
         where pid=#{pid}
     </update>
 
+    <update id="putOnShelves" parameterType="java.util.List">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update product_
+            <set>
+                state=1
+            </set>
+            where pid = ${item}
+        </foreach>
+    </update>
+
+    <update id="pullOffShelves" parameterType="java.util.List">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update product_
+            <set>
+                state=0
+            </set>
+            where pid = ${item}
+        </foreach>
+    </update>
+
     <select id="searchProduct" resultMap="resultProduct" parameterType="com.ordersystem.entity.Product" >
         select pid,pname,state,picture,product_.cid,description,price,mount from product_ join category_ on product_.cid=category_.cid where pname like Concat('%',#{pname},'%')
         <!--<if test="state != null and state != '' or state==0">and state=0</if>-->

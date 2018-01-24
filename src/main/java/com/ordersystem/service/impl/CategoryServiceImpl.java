@@ -9,7 +9,6 @@ import java.util.List;
 public class CategoryServiceImpl implements CategoryService {
     CategoryMapper categoryMapper;
 
-    @Override
     public List<Category> getAllCategory() {
         return categoryMapper.getAllCategory();
     }

@@ -14,6 +14,8 @@ import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.interceptor.SessionAware;
 
 import java.io.*;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,6 +30,15 @@ public class ProductAction extends ActionSupport implements SessionAware {
     private String pictureFileName;
     private String savePath;
     private List<Product> productList;
+    private List selectedId;
+
+    public List getSelectedId() {
+        return selectedId;
+    }
+
+    public void setSelectedId(List selectedId) {
+        this.selectedId = selectedId;
+    }
 
     public CategoryService getCategoryService() {
         return categoryService;
@@ -85,20 +96,28 @@ public class ProductAction extends ActionSupport implements SessionAware {
         FileOutputStream fos=null;
         FileInputStream fis=null;
         try {
-            //文件输出
-            fos= new FileOutputStream(this.getSavePath()+"\\"+this.getPictureFileName());
+            SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
             fis=new FileInputStream (this.getPicture());
+            String suffix = pictureFileName.substring(pictureFileName.lastIndexOf(".") + 1);
+            String tmp = "a"+df.format(new Date())+(int)(10+Math.random()*(99-10+1))+"."+suffix;
+            fos= new FileOutputStream(this.getSavePath()+"\\"+tmp);
             byte[] buffer = new  byte[1024];
             int len = 0;
             while ((len=fis.read(buffer))>0){
                 fos.write(buffer,0,len);
             }
-            product.setPicture(pictureFileName);
-            productService.addProduct(product);
+            //product.setPicture(pictureFileName);
+            product.setPicture(tmp);
+
+            if(product.getPid()==0) {
+                productService.addProduct(product);
+            } else{
+                productService.updateProduct(product);
+            }
+
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (Exception e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }finally{
             try{
@@ -118,24 +137,32 @@ public class ProductAction extends ActionSupport implements SessionAware {
     }
 
     public String showAllProduct() {
-        Page page = new Page();
-        //PageHelper.offsetPage(page.getStart(),page.getCount());
         productList = productService.showAllProduct();
-//        int total = (int) new PageInfo<>(productList).getTotal();
-//        page.setTotal(total);
-//        session.put("productList",productList);
-//        session.put("page",page);
-
         return "showAllProduct";
     }
 
     public String deleteProduct() {
-        System.out.println(product.getPid());
         if(productService.deleteProduct(product.getPid()) == 1){
             productList = productService.showAllProduct();
             return "deleteProduct";
         }
         return "failure";
+    }
+
+    public String putOnShelves() {
+        if(productService.putOnShelves(selectedId) == 1){
+            productList = productService.showAllProduct();
+            return "putOnShelves";
+        }
+        return "fail";
+    }
+
+    public String pullOffShelves() {
+        if(productService.pullOffShelves(selectedId) == 1){
+            productList = productService.showAllProduct();
+            return "pullOffShelves";
+        }
+        return "fail";
     }
 
     public String detailProduct() {
@@ -152,13 +179,6 @@ public class ProductAction extends ActionSupport implements SessionAware {
         return "searchProduct";
     }
 
-    public String updateProduct() {
-        if(productService.updateProduct(product.getPid())==1) {
-            return "updateProduct";
-        }
-        return "failure";
-    }
-
     public String toUpdate() {
         product = productService.toUpdate(product.getPid());
         categoryList = categoryService.getAllCategory();
@@ -167,6 +187,8 @@ public class ProductAction extends ActionSupport implements SessionAware {
         }
         return "failure";
     }
+
+
 
     public String getSavePath() {
         return ServletActionContext.getServletContext().getRealPath(savePath);

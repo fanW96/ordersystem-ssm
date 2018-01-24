@@ -19,7 +19,6 @@
             <result property="description" column="description" />
         </association>
     </resultMap>
-    <!--todo 注册完自动登陆-->
     <insert id="signup" parameterType="com.ordersystem.entity.User" useGeneratedKeys="true" keyProperty="uid">
         insert into user_ (username,password,email,lid) values(#{username},#{password},#{email}, 2)
     </insert>
